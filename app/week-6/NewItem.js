@@ -1,47 +1,83 @@
-"use client";
-import React, { useState } from "react";
-export default function NewItem() {
-    const [name, setName] = useState("");
-    const [quantity, setQuantity] = useState("1");
-    const [category, setCategory] = useState("Produce");
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const item = { name, quantity, category };
-        console.log(item);
-        alert(`Added item: ${name}, quantity: ${quantity}, category: ${category}`);
-        setName("");
-        setQuantity("1");
-        setCategory("Produce");
-    };
-    return (
-        <div className="flex items-center justify-center h-screen">
-            <form onSubmit={handleSubmit} className="flex flex-col items-center">
-                <div className="flex flex-col items-center mb-4">
-                    <label className="text-white mb-2">Item Name</label>
-                    <input className="custom-input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-                </div>
-                <div className="flex flex-col items-center mb-4">
-                    <label className="text-white mb-2">Quantity</label>
-                    <input className="custom-input" type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} min="1" max="99" required />
-                    <select className="custom-select mt-2" value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="Produce">Produce</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Bakery">Bakery</option>
-                        <option value="Meat">Meat</option>
-                        <option value="Frozen Foods">Frozen Foods</option>
-                        <option value="Canned Goods">Canned Goods</option>
-                        <option value="Dry Goods">Dry Goods</option>
-                        <option value="Beverages">Beverages</option>
-                        <option value="Snacks">Snacks</option>
-                        <option value="Household">Household</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div className="flex flex-row items-center justify-center">
-                    <button className="custom-button bg-blue-500 text-white px-4 py-2 rounded-md mt-4">+</button>
-                </div>
-            </form>
-        </div>
-    );
-}
+import React, { useState } from 'react';
+
+const NewItem = ({ onAddItem }) => { 
+  const [name, setName] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [category, setCategory] = useState('produce');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    
+    const id = Math.random().toString(36).slice(2, 9);
+
+    const item = { id, name, quantity, category };
+
+    
+    onAddItem(item);
+
+    
+    setName('');
+    setQuantity(1);
+    setCategory('produce');
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
+      <div className="mb-4">
+        <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name:</label>
+        <input
+          type="text"
+          id="name"
+          className="border rounded text-black w-full py-2 px-3"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="quantity" className="block text-gray-700 font-bold mb-2">Quantity:</label>
+        <input
+          type="number"
+          id="quantity"
+          className="border rounded text-black w-full py-2 px-3"
+          min="1"
+          max="99"
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+          required
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="category" className="block text-gray-700 font-bold mb-2">Category:</label>
+        <select
+          id="category"
+          className="border rounded text-black w-full py-2 px-3"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="produce">Produce</option>
+          <option value="dairy">Dairy</option>
+          <option value="bakery">Bakery</option>
+          <option value="meat">Meat</option>
+          <option value="frozen-foods">Frozen Foods</option>
+          <option value="canned-goods">Canned Goods</option>
+          <option value="dry-goods">Dry Goods</option>
+          <option value="beverages">Beverages</option>
+          <option value="snacks">Snacks</option>
+          <option value="household">Household</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+        Add Item
+      </button>
+    </form>
+  );
+};
+
+export default NewItem;

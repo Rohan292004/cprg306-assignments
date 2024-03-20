@@ -1,13 +1,26 @@
-"Use Client";
-import ItemList from './Item-list'; // Corrected import path
 
-function Page() {
+"use client";
+
+import React, { useState } from "react";
+import ItemList from "./Item-list";
+import NewItem from "./NewItem.js";
+import itemsData from "./item.json";
+
+
+export default function Page() {
+  const [items, setItems] = useState(itemsData);
+
+  const handleAddItem = (newItem) => {
+    setItems((prevItems) => [...prevItems, newItem]);
+  };
+
   return (
-    <div>
-      <h1>Page</h1>
-      <ItemList />
-    </div>
+    <main className="bg-slate-950 text-white flex flex-col">
+      <div>
+        <h2 className="text-3xl font-bold m-2">Shopping List</h2>
+      </div>
+      <NewItem onAddItem={handleAddItem} />
+      <ItemList items={items} />
+    </main>
   );
 }
-
-export default Page;
